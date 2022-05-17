@@ -1,0 +1,73 @@
+PUT /my_index
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 3,  
+      "number_of_replicas": 3
+    }
+  }
+}
+
+DELETE my_index
+
+PUT own_temp 
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "string_fields": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword"
+          }
+        }
+      }
+    ]
+  }
+}
+
+PUT own_temp1
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "bool_fields": {
+          "match_mapping_type": "string",
+          "match": "is_*",
+          "mapping": {
+            "type": "boolean"
+          }
+        }
+      }
+    ]
+  }
+}
+
+GET my_index/_mapping
+
+PUT /my_index/_doc/1
+{
+  "region": "us-central1-a",
+  "healthy": "greed",
+  "name": "es02",
+  "type_of_node": "master eligible",
+  "is_master": "false"
+}
+
+PUT /my_index/_doc/2
+{
+  "region": "us-central1-b",
+  "healthy": "greed",
+  "name": "es01",
+  "type_of_node": "data_hot data_content master eligible coordinating ingest",
+  "is_master": "false"
+}
+
+PUT /my_index/_doc/3
+{
+  "region": "us-central1-c",
+  "healthy": "greed",
+  "name": "es03",
+  "type_of_node": "data_hot data_content master coordinating ingest",
+  "is_master": "true"
+}
